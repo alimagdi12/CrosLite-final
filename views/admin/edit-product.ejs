@@ -12,6 +12,22 @@
         <% } %>
         <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
             <div class="form-control">
+                <label for="category">category</label>
+                <select 
+                    class="<%= validationErrors.find(e => e.param === 'category') ? 'invalid' : '' %>"
+                    type="text" 
+                    name="category" 
+                    id="category" 
+                    value="<% if (editing || hasError) { %><%= product.category %><% } %>">
+                    <option value="book1">book1</option>
+                    <option value="book2">book2</option>
+                    <option value="book3">book3</option>
+                    <option value="book4">book4</option>
+                    <option value="book5">book5</option>
+                    <option value="book6">book6</option>
+                </select>
+            </div>
+            <div class="form-control">
                 <label for="title">Title</label>
                 <input 
                     class="<%= validationErrors.find(e => e.param === 'title') ? 'invalid' : '' %>"
@@ -46,6 +62,14 @@
                     name="description" 
                     id="description" 
                     rows="5"><% if (editing || hasError) { %><%= product.description %><% } %></textarea>
+            </div>
+            <div class="form-control">
+                <label for="description">Details</label>
+                <textarea 
+                    class="<%= validationErrors.find(e => e.param === 'details') ? 'invalid' : '' %>"
+                    name="details" 
+                    id="details" 
+                    rows="5"><% if (editing || hasError) { %><%= product.details %><% } %></textarea>
             </div>
             <% if (editing) { %>
                 <input type="hidden" value="<%= product._id %>" name="productId">

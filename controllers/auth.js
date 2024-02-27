@@ -86,8 +86,10 @@ exports.postLogin = (req, res, next) => {
           validationErrors: []
         });
       }
-      if(user==='alimagdi12367@gmail.com'){
+      if (user.email === 'alimagdi12367@gmail.com') {
         req.session.isAdmin = true;
+      } else {
+        req.session.isAdmin = false;
       }
       bcrypt
         .compare(password, user.password)

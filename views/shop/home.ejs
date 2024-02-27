@@ -193,8 +193,14 @@
                                                             <p class="text-dark fs-5 fw-bold mb-0">$<%= product.price %> / kg</p>
                                                         <% } %>
                                                         <% if (isAuthenticated) { %>
-                                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                            <form action="/cart" method="post">
+                                                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                                <button class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary" type="submit"><i class="fa fa-shopping-bag me-2 text-primary"></i>Add to Cart</button>
+                                                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                                            </form>
                                                         <% } %>
+                                                        <a href="/products/<%= product._id %>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Details</a>
+    
                                                     </div>
                                                 </div>
                                             </div>
