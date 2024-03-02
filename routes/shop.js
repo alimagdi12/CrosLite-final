@@ -29,4 +29,8 @@ router.get('/orders', isAuth, shopController.getOrders);
 
 router.post('/payement', isAuth, shopController.postPayement);
 
+router.get('/profile',isAuth,shopController.getProfile);
+
+router.post('/updateUser',isAuth,shopController.postUpdateUser);
+
 module.exports = router;

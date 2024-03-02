@@ -1,5 +1,6 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
+const User = require('../models/user')
 const Stripe = require("stripe");
 const stripe = Stripe('sk_test_51OmeLSKnxvTYYIlSbsJaeNY5XyiliPJfGg6vA9JQev5T442TXqnEBg2OdZcFZx4Gs5EKVbA7lQ0GO4RyAiM0qbvj005mnOklV9');
 
@@ -9,7 +10,7 @@ exports.getHome = (req,res,next)=>{
       console.log(products);
       res.render('shop/home', {
         prods: products,
-        pageTitle: 'All Products',
+        pageTitle: 'Home',
         path: '/products'
       });
     })
@@ -182,7 +183,7 @@ exports.getOrders = (req, res, next) => {
         }, 0);
         return { ...order.toObject(), totalPrice: total };
       });
-      res.render('shop/orders', {
+      res.render('shop/orders2', {
         path: '/orders',
         pageTitle: 'Your Orders',
         orders: ordersWithTotalPrice
@@ -215,5 +216,37 @@ exports.postPayement=async (req, res) => {
 
   });
 
-  res.send(`/${session.url}`);
-};
+  res.send({ url: session.url });};
+
+exports.getProfile= (req,res,next)=>{
+  user = req.user;
+  // User.findById(user).then(data=>{
+  //   console.log('this is user',data);
+  // })
+  console.log('this is user',user);
+  res.render('shop/userProfile',{
+    pageTitle:'profile ',
+    fName:user.firstName,
+    lName:user.lastName,
+    birthDay:user.birthDay.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }),
+    gender:user.gender,
+    email:user.email,
+    phone:user.phoneNumber
+
+  })
+}
+
+exports.postUpdateUser = async (req, res) => {
+  try {
+    const { username, fname, lname, birthDay, gender, email, mobile } = req.body;
+    const user = await User.findOneAndUpdate(
+      { username }, // Assuming username is a unique identifier for the user
+      { firstName: fname, lastName: lname, birthDay: new Date(birthDay), gender, email, phoneNumber: mobile },
+      { new: true } // Return the updated document
+    );
+    res.redirect('/profile');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ message: 'Error updating user data' });
+  }
+}

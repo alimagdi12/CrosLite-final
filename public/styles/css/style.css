@@ -178,7 +178,7 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../img/hero-img.jpg);
+    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../imgs/cover2.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -194,7 +194,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 25px;
-    background: linear-gradient(rgba(255, 181, 36, 0.7), rgba(255, 181, 36, 0.7));
+    background: linear-gradient(rgb(216 204 181 / 70%),rgb(156 125 65));
 }
 
 .carousel-control-next,
@@ -219,7 +219,7 @@
 
 .page-header {
     position: relative;
-    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/cart-page-header-img.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../imgs/The\ man\ restoring\ Parisian\ brasseries\ to\ their\ golden-age\ glory.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

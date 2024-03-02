@@ -1,0 +1,263 @@
+<%- include('../includes/head.ejs') %>
+
+  <style>
+    body {
+  background-image: url('imgs/books.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-color: #f8f9fa;
+}
+background-image{
+ 
+  filter: blur(50px); /* Adjust the '5px' value to control the blur intensity */
+}
+
+
+
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .submit-btn:hover {
+      background-color: #7d5939;
+      border-color: #7d5939;
+    }
+
+    .star-rating input[type="radio"] {
+      display: none;
+    }
+
+    .star-rating label {
+      font-size: 24px;
+      color: #f1c40f;
+      cursor: pointer;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover~label,
+    .star-rating input[type="radio"]:checked~label {
+      color: #7d5939;
+    }
+    .transparent-card {
+   background-color: rgba(255, 255, 255, 0.7); /* Adjust the alpha value (last parameter) as needed */
+   border: 1px solid rgba(0, 0, 0, 0.125); /* Optional: Add a border with transparency */
+}
+
+  </style>
+  <title>order list</title>
+</head>
+<body>
+  <%- include('../includes/nav.ejs') %>
+<br><br><br><br><br><br><br><br>
+<section class="h-100 h-custom">
+  <div class="container h-100 py-5">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col">
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col" class="h5" style="color: #7d5939;">Shopping Bag</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Pay</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (orders.length <= 0) { %>
+                <h1>Nothing there!</h1>
+            <% } else { %>
+              <% orders.forEach(order => { %>
+              <tr>
+                <th scope="row">
+                  <div class="d-flex align-items-center">
+                    <img src="styles/imgs/70.jpg" class="img-fluid rounded-3"
+                      style="width: 120px;" alt="Book">
+                    <div class="flex-column ms-4">
+                      <% order.products.forEach(p => { %>
+                        <p class="mb-2"><%= p.product.title %></p>
+                      <% }); %>
+                      <p class="mb-0">Daniel Kahneman</p>
+                    </div>
+                  </div>
+                </th>
+              
+                <td class="align-middle">
+                  <div class="d-flex flex-row">
+                    <% order.products.forEach(p => { %>
+                      <p class="mb-2"><%= p.quantity %></p>
+                    <% }); %>
+                  </div>
+                </td>
+                <td class="align-middle">
+                  <p class="mb-0" style="font-weight: 500;">$<%= order.totalPrice.toFixed(2) %></p>
+                </td>
+                <td class="align-middle">
+                  <p class="mb-0" style="font-weight: 500;"><form action="/payement" method="POST">
+                    <input type="hidden" name="totalPrice" value="<%= order.totalPrice * 100 %>">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button type="submit" class="btn btn-primary rounded-pill px-3">Pay with Stripe</button>
+                </form></p>
+                </td>
+              </tr>
+              <% }); %>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
+          <div class="card-body p-4 transparent-card">
+
+            <div class="row">
+              <div class="col-md-6 col-lg-4 col-xl-3 mb-4 mb-md-0">
+                <form>
+                  <div class="d-flex flex-row pb-3">
+                    <div class="d-flex align-items-center pe-2">
+                      <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel1v"
+                        value="" aria-label="..." checked />
+                    </div>
+                    <div class="rounded border w-100 p-3">
+                      <p class="d-flex align-items-center mb-0">
+                        <i class="fab fa-cc-mastercard fa-2x text-dark pe-2"></i>Credit
+                        Card
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-row pb-3">
+                    <div class="d-flex align-items-center pe-2">
+                      <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel2v"
+                        value="" aria-label="..." />
+                    </div>
+                    <div class="rounded border w-100 p-3">
+                      <p class="d-flex align-items-center mb-0 me-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-stripe" viewBox="0 0 16 16">
+                          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.226 5.385c-.584 0-.937.164-.937.593 0 .468.607.674 1.36.93 1.228.415 2.844.963 2.851 2.993C11.5 11.868 9.924 13 7.63 13a7.7 7.7 0 0 1-3.009-.626V9.758c.926.506 2.095.88 3.01.88.617 0 1.058-.165 1.058-.671 0-.518-.658-.755-1.453-1.041C6.026 8.49 4.5 7.94 4.5 6.11 4.5 4.165 5.988 3 8.226 3a7.3 7.3 0 0 1 2.734.505v2.583c-.838-.45-1.896-.703-2.734-.703"/>
+                        </svg>Pay with stripe
+                      </p>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-row">
+                    <div class="d-flex align-items-center pe-2">
+                      <input class="form-check-input" type="radio" name="radioNoLabel" id="radioNoLabel3v"
+                        value="" aria-label="..." />
+                    </div>
+                    <div class="rounded border w-100 p-3">
+                      <p class="d-flex align-items-center mb-0">
+                        <i class="fab fa-cc-paypal fa-2x fa-lg text-dark pe-2"></i>PayPal
+                      </p>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6 col-lg-4 col-xl-6">
+                <div class="row">
+                  <div class="col-12 col-xl-6">
+                    <div class="form-outline mb-4 mb-xl-5">
+                      <input type="text" id="typeName" class="form-control form-control-lg" size="17"
+                        placeholder="John Smith" />
+                      <label class="form-label" for="typeName">Name on card</label>
+                    </div>
+
+                    <div class="form-outline mb-4 mb-xl-5">
+                      <input type="text" id="typeExp" class="form-control form-control-lg" placeholder="MM/YY"
+                        size="7" id="exp" minlength="7" maxlength="7" />
+                      <label class="form-label" for="typeExp">Expiration</label>
+                    </div>
+                  </div>
+                  <div class="col-12 col-xl-6">
+                    <div class="form-outline mb-4 mb-xl-5">
+                      <input type="text" id="typeText" class="form-control form-control-lg" size="17"
+                        placeholder="1111 2222 3333 4444" minlength="19" maxlength="19" />
+                      <label class="form-label" for="typeText">Card Number</label>
+                    </div>
+
+                    <div class="form-outline mb-4 mb-xl-5">
+                      <input type="password" id="typeText" class="form-control form-control-lg"
+                        placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+                      <label class="form-label" for="typeText">Cvv</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-xl-3">
+                <div class="d-flex justify-content-between" style="font-weight: 500;">
+                  <p class="mb-2">Subtotal</p>
+                  <p class="mb-2">$23.49</p>
+                </div>
+
+                <div class="d-flex justify-content-between" style="font-weight: 500;">
+                  <p class="mb-0">Shipping</p>
+                  <p class="mb-0">$2.99</p>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                  <p class="mb-2">Total (tax included)</p>
+                  <p class="mb-2">$26.48</p>
+                </div>
+
+                <a type="button" href="chackout.html" class="btn btn-primary btn-block btn-lg">
+                
+                  <div class="d-flex justify-content-between">
+                    <span>Checkout</span>
+                    <span>$26.48</span>
+                  </div>
+                </a>
+
+              </div>
+            </div>
+
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const checkoutForm = document.getElementById('checkoutForm');
+  checkoutForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const totalPrice = '';
+    fetch('/your-endpoint-for-postPayment', {
+      method: 'POST',
+      body: JSON.stringify({ totalPrice }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        window.location.replace(data.url);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  });
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $(".star-rating input[type='radio']").on("change", function() {
+      console.log("Selected Rating: " + $(this).val());
+    });
+  });
+</script>
+</body>
+</html>

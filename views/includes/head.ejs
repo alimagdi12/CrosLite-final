@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8">
-        <title><%= pageTitle %></title>
+        <title><%= pageTitle%></title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
         <meta content="" name="description">
@@ -27,3 +27,71 @@
 
         <!-- Template Stylesheet -->
         <link href="styles/css/style.css" rel="stylesheet">
+        <style>
+            .fruite-img 
+            {
+    height: 400px; /* Set a fixed height for the image container */
+    overflow: hidden; /* Hide any overflow to maintain the fixed height */
+}
+
+.fruite-img img {
+    object-fit: cover; /* Ensure the image covers the container without stretching */
+    height: 100%; /* Make the image fill the entire container */
+    width: 100%; /* Make the image fill the entire container */
+}
+
+.carousel-item{
+    height: 800px; /* Set a fixed height for the image container */
+    overflow: hidden;
+}
+
+.carousel-item img {
+    object-fit: cover; /* Ensure the image covers the container without stretching */
+    height: 100%; /* Make the image fill the entire container */
+    width: 100%; /* Make the image fill the entire container */
+}
+.service-item{
+    height: 800px; /* Set a fixed height for the image container */
+}
+
+.service-item img {
+    object-fit: cover; /* Ensure the image covers the container without stretching */
+    height: 100%; /* Make the image fill the entire container */
+    width: 100%; /* Make the image fill the entire container */
+}
+.card-img{
+    height: 250px; /* Set a fixed height for the image container */
+    overflow: hidden;
+}
+.card-img2{
+    height: 650px; /* Set a fixed height for the image container */
+     overflow: hidden;
+     width: 100%;
+     object-fit: cover;
+    }
+
+            .vesitable-img img {
+    height: 400px; /* Set the desired height */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    width: 100%; /* Make sure the width is 100% */
+}
+
+.star-rating input[type="radio"] {
+      display: none;
+    }
+
+    .star-rating label {
+      font-size: 24px;
+      color: #f1c40f;
+      cursor: pointer;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover~label,
+    .star-rating input[type="radio"]:checked~label {
+      color: #7d5939;
+    }
+        
+        
+
+        </style>

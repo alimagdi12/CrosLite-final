@@ -22,7 +22,7 @@ exports.getLogin = (req, res, next) => {
   } else {
     message = null;
   }
-  res.render('auth/login', {
+  res.render('auth/login2', {
     path: '/login',
     pageTitle: 'Login',
     errorMessage: message,
@@ -122,7 +122,12 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
+  const fName = req.body.fName;
+  const lName = req.body.lName;
+  const birthday = req.body.birthday;
+  const gender = req.body.gender;
   const email = req.body.email;
+  const mobile = req.body.mobile;
   const password = req.body.password;
 
   const errors = validationResult(req);
@@ -133,8 +138,13 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
       oldInput: {
-        email: email,
-        password: password,
+        fName,
+        lName,
+        birthday,
+        gender,
+        mobile,
+        email,
+        password,
         confirmPassword: req.body.confirmPassword
       },
       validationErrors: errors.array()
@@ -145,7 +155,12 @@ exports.postSignup = (req, res, next) => {
     .hash(password, 12)
     .then(hashedPassword => {
       const user = new User({
-        email: email,
+        firstName:fName,
+        lastName:lName,
+        birthDay:birthday,
+        gender,
+        email,
+        phoneNumber:mobile,
         password: hashedPassword,
         cart: { items: [] }
       });

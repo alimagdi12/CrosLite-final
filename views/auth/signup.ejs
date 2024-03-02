@@ -1,45 +1,235 @@
-<%- include('../includes/head.ejs') %>
-    <link rel="stylesheet" href="/css/forms.css">
-    <link rel="stylesheet" href="/css/auth.css">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page -->
+    <title>Register here</title>
+
+    <!-- Icons font CSS -->
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS -->
+    <link href="styles/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="styles/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS -->
+    <link href="styles/css/main.css" rel="stylesheet" media="all">
 </head>
-
+<style>
+    .validation-message{
+        margin-top: 5px;
+        color: red;
+    }
+</style>
 <body>
-   <%- include('../includes/navigation.ejs') %>
+    <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Bibliophile Boutique</h2>
+                    <h3>Register</h3>
+                    <form id="registrationForm"
+                    onsubmit="return validateForm(event)"
+                    action="/signup" method="POST">
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label" for="fname">First Name</label>
+                                    <input id="fname" class="input--style-4" type="text" name="fName" >
+                                    <div id="fnameError" class="validation-message"></div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="lname" class="label">Last Name</label>
+                                    <input id="lname" class="input--style-4" type="text" name="lName" >
+                                    <div id="lnameError" class="validation-message"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Birthday</label>
+                                    <div class="input-group-icon">
+                                        <input class="input--style-4 js-datepicker" type="date" name="birthday" >
+                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Gender</label>
+                                    <div class="p-t-10">
+                                        <label class="radio-container m-r-45">Male
+                                            <input type="radio" checked="checked" name="gender" value="male">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                        <label class="radio-container">Female
+                                            <input type="radio" name="gender" value="female">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="email" class="label">Email</label>
+                                    <input id="email" class="input--style-4" type="email" name="email" >
+                                    <div id="emailError" class="validation-message"></div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="mobile" class="label">Phone Number</label>
+                                    <input id="mobile" class="input--style-4" type="text" name="mobile" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label for="password" class="label">Password</label>
+                                    <input id="password" class="input--style-4" type="password" name="password" value="<%= oldInput.password %>" >
+                                    <div id="passError" class="validation-message"></div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Confirm Password</label>
+                                    <input class="input--style-4" type="password" name="confirmPassword" >
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Sign UP</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <main>
-        <% if (errorMessage) { %>
-            <div class="user-message user-message--error"><%= errorMessage %></div>
-        <% } %>
-        <form class="login-form" action="/signup" method="POST" novalidate>
-            <div class="form-control">
-                <label for="email">E-Mail</label>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>"
-                    type="email" 
-                    name="email" 
-                    id="email" 
-                    value="<%= oldInput.email %>">
-            </div>
-            <div class="form-control">
-                <label for="password">Password</label>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>"
-                    type="password" 
-                    name="password" 
-                    id="password" 
-                    value="<%= oldInput.password %>">
-            </div>
-            <div class="form-control">
-                <label for="confirmPassword">Confirm Password</label>
-                <input 
-                    class="<%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : '' %>"
-                    type="password" 
-                    name="confirmPassword" 
-                    id="confirmPassword" 
-                    value="<%= oldInput.confirmPassword %>">
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="btn" type="submit">Signup</button>
-        </form>
-    </main>
-<%- include('../includes/end.ejs') %>
+    <!-- Jquery JS -->
+    <script src="styles/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS -->
+    <script src="styles/vendor/select2/select2.min.js"></script>
+    <script src="styles/vendor/datepicker/moment.min.js"></script>
+    <script src="styles/vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS -->
+    <script src="styles/js/global.js"></script>
+
+    <!-- Client-side validation script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+
+            form.addEventListener('submit', function (event) {
+                var password = form.querySelector('[name="password"]').value;
+                var confirmPassword = form.querySelector('[name="confirm_password"]').value;
+
+                if (password !== confirmPassword) {
+                  
+                    event.preventDefault(); // Prevent form submission
+                }
+                // You can add more validation logic here if needed
+            });
+        });
+
+        /////////////////////////////////////////////////////
+        function validateForm(e) {
+  let uservalid = true;
+  var fname = document.getElementById("fname").value;
+  var lname = document.getElementById("lname").value;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("pass").value;
+  var repass = document.getElementById("repass").value;
+  var mobile=document.getElementById( "mobile" ).value;
+  ///////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
+  var fnameError = document.getElementById("fnameError");
+  var lnameError = document.getElementById("lnameError");
+  var emailError = document.getElementById("emailError");
+  var passError = document.getElementById("passError");
+  var repassError = document.getElementById("repassError");
+var mobileError=document.getElementById("mobileError");
+
+
+if (mobile === "" || !/	^01[0-2]\s\d{1,8}$/.test(mobile)) {
+  mobileError.innerHTML =
+    "mobile is required and should contain only numbers.";
+  uservalid = false;
+} else{
+  mobileError.innerHTML = "";
+}
+
+
+
+  if (fname === "" || !/^[a-zA-Z]+$/.test(fname)) {
+    fnameError.innerHTML =
+      "First name is required and should contain only alphabetical characters.";
+    uservalid = false;
+  } else{
+    fnameError.innerHTML = "";
+  }
+
+
+  if (lname === "" || !/^[a-zA-Z]+$/.test(lname)) {
+    lnameError.innerHTML =
+      "Last name is required and should contain only alphabetical characters.";
+    uservalid = false;
+  }
+  else{
+    lnameError.innerHTML = "";
+  }
+  if (
+    email === "" ||
+    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)
+  ) {
+    emailError.innerHTML =
+      "Email is required and should be a valid email address.";
+    uservalid = false;
+  }
+  else{
+    emailError.innerHTML = "";
+  }
+
+  if (password.length < 8) {
+    passError.innerHTML = "Password should be at least 8 characters long.";
+    uservalid = false;
+  }
+  else{
+    passError.innerHTML = "";
+  }
+
+  if (password !== repass) {
+    repassError.innerHTML = "Passwords do not match.";
+    uservalid = false;
+  }
+  else{
+    repassError.innerHTML = "";
+  }
+
+
+  if (!uservalid) {
+    e.preventDefault();
+}}
+    </script>
+
+</body>
+
+</html>
