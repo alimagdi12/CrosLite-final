@@ -22,7 +22,7 @@ exports.getLogin = (req, res, next) => {
   } else {
     message = null;
   }
-  res.render('auth/login2', {
+  res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
     errorMessage: message,
@@ -122,6 +122,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
+  const userName = req.body.userName;
   const fName = req.body.fName;
   const lName = req.body.lName;
   const birthday = req.body.birthday;
@@ -138,6 +139,7 @@ exports.postSignup = (req, res, next) => {
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
       oldInput: {
+        userName,
         fName,
         lName,
         birthday,
@@ -155,6 +157,7 @@ exports.postSignup = (req, res, next) => {
     .hash(password, 12)
     .then(hashedPassword => {
       const user = new User({
+        userName,
         firstName:fName,
         lastName:lName,
         birthDay:birthday,

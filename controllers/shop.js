@@ -2,8 +2,16 @@ const Product = require('../models/product');
 const Order = require('../models/order');
 const User = require('../models/user')
 const Stripe = require("stripe");
+const user = require('../models/user');
 const stripe = Stripe('sk_test_51OmeLSKnxvTYYIlSbsJaeNY5XyiliPJfGg6vA9JQev5T442TXqnEBg2OdZcFZx4Gs5EKVbA7lQ0GO4RyAiM0qbvj005mnOklV9');
-
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+	service: "gmail",
+	auth:{
+    user:"alimagdi12367@gmail.com",
+    pass:"aimorddjdtspxute"
+}
+});
 exports.getHome = (req,res,next)=>{
   Product.find()
     .then(products => {
@@ -52,7 +60,7 @@ exports.getProducts = (req, res, next) => {
       // console.log(products);
       res.render('shop/shop', {
         prods: products,
-        pageTitle: 'All Products',
+        pageTitle: 'Shop',
         path: '/products'
       });
     })
@@ -87,6 +95,39 @@ exports.getIndex = (req, res, next) => {
       console.log(err);
     });
 };
+
+exports.getContact=(req,res,next)=>{
+  res.render('shop/contact',{pageTitle:'about'})
+}
+
+exports.postContact=(req,res,next)=> {
+  const name = req.body.name;
+  const email = req.body.email;
+  const message = req.body.message;
+  transporter.sendMail({
+    to: req.user.email,
+    from: 'alimagdi12367@gmail.com',
+    subject: 'Order details',
+    html: `
+      <p>Contact Details:</p>
+      <ul>
+      <li>${name}</li>
+      <li>${email}</li>
+      <li>${message}</li>
+
+      </ul>
+    `
+  });
+  res.redirect('/contact')
+}
+
+exports.getAbout = (req,res,next)=>{
+  res.render('shop/about',{
+    pageTitle:"About",
+    path:"/about"
+  });
+}
+
 exports.getCart = (req, res, next) => {
   req.user
     .populate('cart.items.productId')
@@ -98,7 +139,7 @@ exports.getCart = (req, res, next) => {
       console.log('this is cart',products);
       res.render('shop/cart', {
         path: '/cart',
-        pageTitle: 'Your Cart',
+        pageTitle: 'Cart',
         products: products,
         totalPrice: totalPrice // Pass total price to the template
       });
@@ -140,23 +181,25 @@ exports.postOrder = (req, res, next) => {
       const totalPrice = products.reduce((acc, product) => {
         return acc + (product.quantity * product.product.price);
       }, 0);
-      
-      const order = new Order({
-        user: {
-          email: req.user.email,
-          userId: req.user
-        },
-        products: products,
-        totalPrice: totalPrice // Add total price to the order
+
+      // Send email with products details
+      transporter.sendMail({
+        to: req.user.email,
+        from: 'alimagdi12367@gmail.com',
+        subject: 'Order details',
+        html: `
+          <p>Your order details:</p>
+          <ul>
+            ${products.map(product => `<li>${product.product.title} - ${product.quantity} x $${product.product.price}</li>`).join('')}
+          </ul>
+          <p>Total Price: $${totalPrice}</p>
+        `
       });
 
-      return order.save()
-        .then(() => {
-          return req.user.clearCart();
-        });
     })
     .then(() => {
-      res.redirect('/orders');
+      req.user.clearCart();
+      res.redirect('/products');
     })
     .catch(err => console.log(err));
 };
@@ -193,60 +236,74 @@ exports.getOrders = (req, res, next) => {
 };
 
 
-exports.postPayement=async (req, res) => {
-  const { totalPrice } = req.body;
+// exports.postPayement=async (req, res) => {
+//   const { totalPrice } = req.body;
 
-  const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-          {
-              price_data: {
-                  currency: 'usd',
-                  product_data: {
-                      name: 'Your Product Name',
-                  },
-                  unit_amount: totalPrice,
-              },
-              quantity: 1,
-          },
-      ],     
-      mode:'payment',
-      success_url: `${req.protocol}://${req.get('host')}/ckeckout-success?success=true`,
-      cancel_url: `${req.protocol}://${req.get('host')}/cart?canceled=true`,
+//   const session = await stripe.checkout.sessions.create({
+//       payment_method_types: ['card'],
+//       line_items: [
+//           {
+//               price_data: {
+//                   currency: 'usd',
+//                   product_data: {
+//                       name: 'Your Product Name',
+//                   },
+//                   unit_amount: totalPrice,
+//               },
+//               quantity: 1,
+//           },
+//       ],     
+//       mode:'payment',
+//       success_url: `${req.protocol}://${req.get('host')}/ckeckout-success?success=true`,
+//       cancel_url: `${req.protocol}://${req.get('host')}/cart?canceled=true`,
 
-  });
+//   });
 
-  res.send({ url: session.url });};
+//   res.send({ url: session.url });};
 
-exports.getProfile= (req,res,next)=>{
-  user = req.user;
-  // User.findById(user).then(data=>{
-  //   console.log('this is user',data);
-  // })
-  console.log('this is user',user);
-  res.render('shop/userProfile',{
-    pageTitle:'profile ',
-    fName:user.firstName,
-    lName:user.lastName,
-    birthDay:user.birthDay.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }),
-    gender:user.gender,
-    email:user.email,
-    phone:user.phoneNumber
+  exports.getProfile = (req, res, next) => {
+    const user = req.user;
+    console.log('this is user', user);
+    res.render('shop/userProfile', {
+      pageTitle: 'profile ',
+      userName: user.userName,
+      fName: user.firstName,
+      lName: user.lastName,
+      birthDay: user.birthDay.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }),
+      gender: user.gender,
+      email: user.email,
+      phone: user.phoneNumber
+    });
+  };
+  
+  exports.postUpdateUser = async (req, res) => {
+    try {
+      const { username, fname, lname, birthDay, gender, email, mobile } = req.body;
+      const updatedUser = await User.findOneAndUpdate(
+        { username, firstName: fname, lastName: lname, birthDay: new Date(birthDay), gender, email, phoneNumber: mobile },
+      );
+      res.redirect('/profile');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: 'Error updating user data' });
+    }
+  };
+  
 
-  })
-}
 
-exports.postUpdateUser = async (req, res) => {
-  try {
-    const { username, fname, lname, birthDay, gender, email, mobile } = req.body;
-    const user = await User.findOneAndUpdate(
-      { username }, // Assuming username is a unique identifier for the user
-      { firstName: fname, lastName: lname, birthDay: new Date(birthDay), gender, email, phoneNumber: mobile },
-      { new: true } // Return the updated document
-    );
-    res.redirect('/profile');
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ message: 'Error updating user data' });
+  exports.postFooterSearch=(req,res,next)=> {
+    const email = req.body.email;
+    transporter.sendMail({
+      to: req.user.email,
+      from: 'alimagdi12367@gmail.com',
+      subject: 'contact subscribe ',
+      html: `
+        <p>Contact subscribe:</p>
+        <ul>
+        <li>${email}</li>
+  
+        </ul>
+      `
+    });
+    res.redirect('/')
   }
-}

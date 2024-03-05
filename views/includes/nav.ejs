@@ -1,7 +1,41 @@
+<style>
+    .nav-link {
+        color:#679d06 !important
+    }
+    .nav-link:hover{
+        color:gray !important
+    }
+    .color{
+        color:#679d06 !important
+    }
+    .border-color{
+        border: #679d06;
+    }
+    
+    .color-white{
+        color:white !important
+    }
+    .bg-color{
+        background-color: #679d06;
+    }
+    .bg-color-hover:hover{
+        background-color:white ;
+    }
+    .bg-section{
+        background-color: gray !important;
+    }
+    .color-second{
+        color: #375207;
+    }
+    .bg-color-second:hover{
+        background-color: #375207 !important;
+        color: white;
+    }
 
+</style>
         <!-- Navbar start -->
         <div class="container-fluid fixed-top">
-            <div class="container topbar bg-primary d-none d-lg-block">
+            <!-- <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
                     <div class="top-info ps-2">
                         <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, Egypt</a></small>
@@ -13,17 +47,21 @@
                         <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">Bibliophile Boutique</h1></a>
+                    <a href="/" class="navbar-brand"><h1 class="text-primary display-6"><img src="/styles/img/logo.png" alt="" style="width: 120px;height: 120px;"></h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <div class="navbar-nav mx-auto">
-                            <a href="/" class="nav-item nav-link">Home</a>
-                            <a href="/products" class="nav-item nav-link active">Shop</a>
+                            <a href="/" class="nav-item nav-link <%if(pageTitle=='Home'){%>
+                                active
+                            <%}%>">Home</a>
+                            <a href="/products" class="nav-item nav-link <%if(pageTitle=='Shop'){%>
+                                active
+                            <%}%>">Shop</a>
                             <!-- <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -34,13 +72,20 @@
                                     <a href="orders.html" class="dropdown-item">orders</a>
                                 </div>
                             </div> -->
-                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                            <a href="/contact" class="nav-item nav-link<%if(pageTitle=='Contact'){%>
+                                active
+                            <%}%>">Contact</a>
+                            <a href="/about" class="nav-item nav-link<%if(pageTitle=='About'){%>
+                                active
+                            <%}%>">About</a>
+
                             <% if (!isAuthenticated) { %>
                                 <a href="/login" class="nav-item nav-link">Login</a>
                                 <a href="/signup" class="nav-item nav-link">signup</a>
                                 <% } else { %>
-                                    <a href="/cart" class="nav-item nav-link">Bag</a>
-                                    <a href="/orders" class="nav-item nav-link">Orders</a>
+                                    <a href="/cart" class="nav-item nav-link <%if(pageTitle=='Cart'){%>
+                                        active
+                                    <%}%>">Cart</a>
                                         <form action="/logout" method="post">
                                             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                             <button type="submit" class="nav-item nav-link" style="background-color: transparent;border: none;">Logout</button>
@@ -48,14 +93,14 @@
                                 <% } %>
                         </div>
                         <div class="d-flex m-3 me-0">
-                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                            <a href="/cart" class="position-relative me-4 my-auto">
+                            <button class="btn-search btn border btn-md-square rounded-circle bg-white me-4 border-color" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary color"></i></button>
+                            <a href="/cart" class="position-relative me-4 my-auto color">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
                                     <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"/>
                                   </svg>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"></span>
+                                <span class="position-absolute rounded-circle d-flex align-items-center justify-content-center text-dark px-1 color" style="top: -5px; left: 15px; height: 20px; min-width: 20px;"></span>
                             </a>
-                            <a href="/profile" class="my-auto">
+                            <a href="/profile" class="my-auto color">
                                 <i class="fas fa-user fa-2x"></i>
                             </a>
                         </div>

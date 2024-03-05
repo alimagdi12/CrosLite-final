@@ -132,7 +132,8 @@
 .navbar .navbar-nav .nav-link.active,
 .fixed-top.bg-white .navbar .navbar-nav .nav-link:hover,
 .fixed-top.bg-white .navbar .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+    /* color: var(--bs-primary); */
+    color:gray !important ;
 }
 
 .navbar .dropdown-toggle::after {
@@ -178,7 +179,7 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../imgs/cover2.jpg);
+    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../images/crocs3.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -228,14 +229,14 @@
 @media (min-width: 992px) {
     .hero-header,
     .page-header {
-        margin-top: 152px !important;
+        /* margin-top: 152px !important; */
     }
 }
 
 @media (max-width: 992px) {
     .hero-header,
     .page-header {
-        margin-top: 97px !important;
+        /* margin-top: 97px !important; */
     }
 }
 /*** Hero Header end ***/
@@ -252,12 +253,12 @@
     content: "";
     width: 35px;
     height: 35px;
-    background: var(--bs-secondary);
+    /* background: var(--bs-secondary); */
     position: absolute;
     bottom: -10px;
     transform: translate(-50%);
     transform: rotate(45deg);
-    background: var(--bs-secondary);
+    background: #679d06;
     
 }
 /*** featurs End ***/

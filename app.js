@@ -12,7 +12,7 @@ const errorController = require('./controllers/error');
 const User = require('./models/user');
 
 const MONGODB_URI =
-  'mongodb+srv://admin:XHHU9hPLA5Sw7K6J@cluster0.jynhvzr.mongodb.net/E-COMMERCE';
+  'mongodb+srv://admin:XHHU9hPLA5Sw7K6J@cluster0.jynhvzr.mongodb.net/CrosLite';
 
 const app = express();
 const store = new MongoDBStore({

@@ -1,32 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="utf-8">
-        <title>Bibliophile Boutique</title>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
-
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
-
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-        <!-- Libraries Stylesheet -->
-        <link href="styles/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-        <link href="styles/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="styles/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Template Stylesheet -->
-        <link href="styles/css/style.css" rel="stylesheet">
+<%- include('../includes/head.ejs') %>
         <style>
             .fruite-img {
     height: 400px; /* Set a fixed height for the image container */
@@ -102,8 +74,12 @@
                         <div class="row g-4">
                             <div class="col-xl-3">
                                 <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                                    <form action="/search" method="POST">
+                                        <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" name="search">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button type="submit" style="border: none;background-color: transparent;"><span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span></button>
+                                    </form>
+                                    <!-- <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span> -->
                                 </div>
                             </div>
                             <div class="col-6"></div>
@@ -166,7 +142,7 @@
                                             <output id="amount" name="amount" min-velue="0" max-value="500" for="rangeInput">0</output>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
+                                    <!-- <div class="col-lg-12">
                                         <div class="mb-3">
                                             <h4>Additional</h4>
                                             <div class="mb-2">
@@ -190,7 +166,7 @@
                                                 <label for="Categories-5"> Expired</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!-- <div class="col-lg-12">
                                         <h4 class="mb-3">Featured products</h4>
                                         <div class="d-flex align-items-center justify-content-start">
@@ -264,7 +240,7 @@
                                     <div class="col-md-6 col-lg-6 col-xl-4">
                                        <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
-                                                <img src="styles/imgs/44.jpg" class="img-fluid w-100 rounded-top" alt="">
+                                                <img src="styles/images/products/<%= product.imageUrl%>" class="img-fluid w-100 rounded-top" alt="">
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;">New</div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom text-center">
@@ -276,7 +252,7 @@
                                                         <% if (isAuthenticated) { %>
                                                             <form action="/cart" method="post">
                                                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                                                <button class="btn btn-primary rounded-pill px-3" type="submit">Add to Bag</button>
+                                                                <button class="btn btn-primary rounded-pill px-3" type="submit">Add to Cart</button>
                                                                 <input type="hidden" name="productId" value="<%= product._id %>">
                                                             </form>
                                                             
@@ -448,7 +424,7 @@
                                             </div>
                                         </div> -->
                                     </div>
-                                    <div class="col-12">
+                                    <!-- <div class="col-12">
                                         <div class="pagination d-flex justify-content-center mt-5">
                                             <a href="#" class="rounded">&laquo;</a>
                                             <a href="#" class="active rounded">1</a>
@@ -459,7 +435,7 @@
                                             <a href="#" class="rounded">6</a>
                                             <a href="#" class="rounded">&raquo;</a>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -469,92 +445,7 @@
         </div>
         <!-- Fruits Shop End-->
 
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
-            <div class="container py-5">
-                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
-                    <div class="row g-4">
-                        <div class="col-lg-3">
-                            <a href="#">
-                                <h1 class="text-primary mb-0">Bibliophile Boutique</h1>
-                                <p class="text-secondary mb-0">New Books</p>
-                            </a>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="position-relative mx-auto">
-                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">
-                                <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="d-flex justify-content-end pt-3">
-                                <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
-                                <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Why People Like us!</h4>
-                            <p class="mb-4">typesetting, remaining essentially unchanged. It was 
-                                popularised in the 1960s with the like Aldus PageMaker including of Lorem Ipsum.</p>
-                            <a href="" class="btn border-secondary py-2 px-4 rounded-pill text-primary">Read More</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex flex-column text-start footer-item">
-                            <h4 class="text-light mb-3">Shop Info</h4>
-                            <a class="btn-link" href="">About Us</a>
-                            <a class="btn-link" href="">Contact Us</a>
-                            <a class="btn-link" href="">Privacy Policy</a>
-                            <a class="btn-link" href="">Terms & Condition</a>
-                            <a class="btn-link" href="">Return Policy</a>
-                            <a class="btn-link" href="">FAQs & Help</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="d-flex flex-column text-start footer-item">
-                            <h4 class="text-light mb-3">Account</h4>
-                            <a class="btn-link" href="">My Account</a>
-                            <a class="btn-link" href="">Shop details</a>
-                            <a class="btn-link" href="">Shopping Bag</a>
-                            <a class="btn-link" href="">Wishlist</a>
-                            <a class="btn-link" href="">Order History</a>
-                            <a class="btn-link" href="">International Orders</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-item">
-                            <h4 class="text-light mb-3">Contact</h4>
-                            <p>Address:Egypt</p>
-                            <p>Email: Example@gmail.com</p>
-                            <p>Phone: +0123 4567 8910</p>
-                            <p>Payment Accepted</p>
-                            <img src="img/payment.png" class="img-fluid" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
-
-        <!-- Copyright Start -->
-        <div class="container-fluid copyright bg-dark py-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>node js project</a>, All right reserved.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Copyright End -->
-
+        <%- include('../includes/footer.ejs') %>
 
 
         <!-- Back to Top -->
