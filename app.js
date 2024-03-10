@@ -1,5 +1,5 @@
 const path = require('path');
-
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -10,9 +10,8 @@ const flash = require('connect-flash');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
-
-const MONGODB_URI =
-  'mongodb+srv://admin:XHHU9hPLA5Sw7K6J@cluster0.jynhvzr.mongodb.net/CrosLite';
+const port = process.env.PORT;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const app = express();
 const store = new MongoDBStore({
@@ -68,7 +67,7 @@ app.use(errorController.get404);
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(3000);
+    app.listen(port);
   })
   .catch(err => {
     console.log(err);
